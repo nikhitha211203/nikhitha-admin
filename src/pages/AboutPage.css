@@ -1,0 +1,198 @@
+.about-wrapper {
+  background: #0f172a;
+  min-height: 100vh;
+  padding: 20px;
+  color: white;
+  font-family: "Inter", sans-serif;
+}
+
+/* Page Title */
+.page-title {
+  text-align: center;
+  margin-bottom: 18px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* Main Form */
+.form-container {
+  max-width: 650px;
+  margin: 0 auto;
+  background: #1e293b;
+  padding: 25px;
+  border-radius: 18px;
+}
+
+/* Profile Section */
+.profile-section {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.profile-photo {
+  width: 130px;
+  height: 130px;
+  border-radius: 100%;
+  border: 3px solid #334155;
+  object-fit: cover;
+  margin-bottom: 12px;
+}
+
+.upload-btn {
+  background: #2563eb;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+}
+
+.upload-btn input {
+  opacity: 0;
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+}
+
+/* Labels + Inputs */
+.form-label {
+  margin-bottom: 6px;
+  font-size: 15px;
+  color: #d1d5db;
+  font-weight: 600;
+  display: block;
+}
+
+.input-field,
+.textarea-field {
+  width: 100%;
+  background: #0f172a;
+  border: 1px solid #334155;
+  padding: 12px;
+  border-radius: 12px;
+  color: white;
+  font-size: 15px;
+  margin-bottom: 18px;
+}
+
+.textarea-field {
+  min-height: 110px;
+  resize: vertical;
+}
+
+/* Skills */
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.skill-chip {
+  background: #1e40af;
+  padding: 6px 14px;
+  border-radius: 20px;
+  display: flex;
+  gap: 6px;
+}
+
+.skill-chip button {
+  background: none;
+  border: none;
+  color: #d1d5db;
+  cursor: pointer;
+}
+
+.skill-add-box {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.add-btn {
+  background: #2563eb;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+/* Education */
+.education-card {
+  background: #0f172a;
+  border: 1px solid #334155;
+  padding: 16px;
+  border-radius: 14px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.edu-title {
+  font-weight: 600;
+}
+
+.edu-sub,
+.edu-year {
+  color: #94a3b8;
+}
+
+.edu-delete {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.add-edu-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px dashed #3b82f6;
+  color: #3b82f6;
+  background: transparent;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+/* Bottom Buttons */
+.bottom-btns {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.cancel-btn {
+  background: #334155;
+  padding: 12px 25px;
+  border-radius: 12px;
+  border: none;
+  color: #cbd5e1;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.save-btn {
+  background: #2563eb;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+  .form-container {
+    padding: 18px;
+  }
+  
+  .bottom-btns {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
