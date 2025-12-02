@@ -56,7 +56,7 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <h1 className="title">Portfolio Admin</h1>
+      <h1 className="title">Porrtfolio admin (Nikhitha)</h1>
       <p className="subtitle">Sign in to manage your content.</p>
 
       <div className="login-box">
