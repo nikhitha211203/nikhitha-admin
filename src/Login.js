@@ -43,16 +43,17 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
-  const handleLogin = () => {
-    const adminEmail = "nikhitha@gmail.com";
-    const adminPassword = "Nikhitha@211203";
+const handleLogin = () => {
+  const adminEmail = "nikhitha@gmail.com";
+  const adminPassword = "Nikhitha@211203";
 
-    if (email === adminEmail && password === adminPassword) {
-      navigate("/dashboard");
-    } else {
-      setError("Invalid email or password!");
-    }
-  };
+  if (email === adminEmail && password === adminPassword) {
+    localStorage.setItem("isLoggedIn", "true"); 
+    navigate("/dashboard");
+  } else {
+    setError("Invalid email or password!");
+  }
+};
 
   return (
     <div className="login-container">

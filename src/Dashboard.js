@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+
+  // 🔥 Session Check
+  useEffect(() => {
+    const loggedIn = localStorage.getItem("isLoggedIn");
+    if (!loggedIn) {
+      navigate("/"); // Redirect to login if not logged in
+    }
+  }, [navigate]);
 
   const contentItems = [
     {
@@ -34,11 +42,20 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
+      
       {/* Header */}
       <div className="dashboard-header">
         <h2>Admin Dashboard</h2>
-        <button className="logout-icon" onClick={() => navigate("/")}>
-          ⇦
+
+        {/* Logout Button */}
+        <button
+          className="logout-icon"
+          onClick={() => {
+            localStorage.removeItem("isLoggedIn"); // Clear session
+            navigate("/"); // Go to login
+          }}
+        >
+          ⇦ Logout
         </button>
       </div>
 
@@ -47,6 +64,7 @@ const Dashboard = () => {
         <div className="banner"></div>
         <h3>Welcome, Admin!</h3>
         <p>Here you can manage all the content of your portfolio.</p>
+
         <button
           className="view-btn"
           onClick={() =>
