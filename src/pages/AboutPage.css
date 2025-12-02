@@ -1,38 +1,41 @@
+/* Background */
 .about-wrapper {
   background: #0f172a;
   min-height: 100vh;
   padding: 20px;
   color: white;
-  font-family: "Inter", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* Page Title */
+/* Title */
 .page-title {
-  text-align: center;
-  margin-bottom: 18px;
   font-size: 22px;
   font-weight: 700;
+  margin-bottom: 20px;
 }
 
-/* Main Form */
+/* Form container */
 .form-container {
-  max-width: 650px;
-  margin: 0 auto;
   background: #1e293b;
+  width: 100%;
+  max-width: 520px;     /* PERFECT for laptop & phone */
   padding: 25px;
   border-radius: 18px;
+  box-sizing: border-box;
 }
 
-/* Profile Section */
+/* Profile */
 .profile-section {
   text-align: center;
   margin-bottom: 25px;
 }
 
-.profile-photo {
+.profile-img {
   width: 130px;
   height: 130px;
-  border-radius: 100%;
+  border-radius: 100px;
   border: 3px solid #334155;
   object-fit: cover;
   margin-bottom: 12px;
@@ -41,9 +44,11 @@
 .upload-btn {
   background: #2563eb;
   padding: 10px 16px;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
+  display: inline-block;
   position: relative;
+  font-size: 14px;
 }
 
 .upload-btn input {
@@ -53,28 +58,29 @@
   cursor: pointer;
 }
 
-/* Labels + Inputs */
+/* Form Fields */
 .form-label {
-  margin-bottom: 6px;
-  font-size: 15px;
-  color: #d1d5db;
+  margin-bottom: 15px; /* increased from 10px to 15px */
   font-weight: 600;
-  display: block;
+  color: #d1d5db;
 }
 
-.input-field,
-.textarea-field {
+
+.input,
+.textarea {
   width: 100%;
   background: #0f172a;
   border: 1px solid #334155;
   padding: 12px;
+  font-size: 15px;
   border-radius: 12px;
   color: white;
-  font-size: 15px;
+  
   margin-bottom: 18px;
+  box-sizing: border-box;
 }
 
-.textarea-field {
+.textarea {
   min-height: 110px;
   resize: vertical;
 }
@@ -96,26 +102,27 @@
 }
 
 .skill-chip button {
-  background: none;
   border: none;
+  background: none;
   color: #d1d5db;
   cursor: pointer;
 }
 
+/* Add Skill */
 .skill-add-box {
   display: flex;
   gap: 10px;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 .add-btn {
   background: #2563eb;
+  color: white;
   border: none;
   padding: 10px 14px;
   border-radius: 12px;
-  color: white;
-  cursor: pointer;
   font-size: 20px;
+  cursor: pointer;
 }
 
 /* Education */
@@ -135,64 +142,69 @@
 
 .edu-sub,
 .edu-year {
-  color: #94a3b8;
+  font-size: 14px;
+  color: #a3a3a3;
 }
 
 .edu-delete {
   background: none;
   border: none;
-  color: #94a3b8;
+  color: #a3a3a3;
   font-size: 22px;
   cursor: pointer;
 }
 
 .add-edu-btn {
   width: 100%;
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px dashed #3b82f6;
-  color: #3b82f6;
+  padding: 11px;
   background: transparent;
+  border: 1px dashed #2563eb;
+  border-radius: 12px;
+  color: #2563eb;
   font-weight: 600;
+  margin-top: 8px;
   cursor: pointer;
-  margin-bottom: 20px;
 }
 
 /* Bottom Buttons */
 .bottom-btns {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
+  margin-top: 25px;
+}
+
+.cancel-btn,
+.save-btn {
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
 }
 
 .cancel-btn {
   background: #334155;
-  padding: 12px 25px;
-  border-radius: 12px;
-  border: none;
-  color: #cbd5e1;
-  font-weight: 600;
-  cursor: pointer;
+  color: #d1d5db;
 }
 
 .save-btn {
   background: #2563eb;
-  padding: 12px 25px;
-  border: none;
-  border-radius: 12px;
   color: white;
-  font-weight: 600;
-  cursor: pointer;
 }
 
-/* Mobile Responsive */
+/* Phone Fixes */
 @media (max-width: 480px) {
   .form-container {
     padding: 18px;
   }
-  
+
   .bottom-btns {
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
+  }
+
+  .profile-img {
+    width: 110px;
+    height: 110px;
   }
 }

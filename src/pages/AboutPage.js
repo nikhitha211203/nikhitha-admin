@@ -7,14 +7,13 @@ const AboutPage = () => {
 
   // Profile Image
   const [profileImg, setProfileImg] = useState(null);
-
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) setProfileImg(URL.createObjectURL(file));
   };
 
   // Skills
-  const [skills, setSkills] = useState(["Swift", "Python", "UI/UX Design", "JavaScript"]);
+  const [skills, setSkills] = useState(["React", "Python", "UI/UX"]);
   const [newSkill, setNewSkill] = useState("");
 
   const addSkill = () => {
@@ -30,9 +29,9 @@ const AboutPage = () => {
   // Education
   const [education, setEducation] = useState([
     {
-      title: "B.S. in Computer Science",
-      university: "University of Technology",
-      year: "2018 - 2022",
+      title: "BCA Computer Science",
+      university: "ABC University",
+      year: "2019 - 2022",
     },
   ]);
 
@@ -48,13 +47,8 @@ const AboutPage = () => {
     setNewEdu({ title: "", university: "", year: "" });
   };
 
-  const deleteEducation = (index) => {
-    setEducation(education.filter((_, i) => i !== index));
-  };
-
-  const handleSave = () => {
-    alert("Saved!");
-    navigate("/dashboard");
+  const deleteEducation = (i) => {
+    setEducation(education.filter((_, index) => index !== i));
   };
 
   return (
@@ -62,38 +56,36 @@ const AboutPage = () => {
       <h2 className="page-title">Edit About Me</h2>
 
       <form className="form-container">
-
-        {/* PROFILE SECTION */}
+        {/* Profile Section */}
         <div className="profile-section">
           <img
             src={profileImg || "https://i.pravatar.cc/200"}
+            className="profile-img"
             alt="profile"
-            className="profile-photo"
           />
-
           <label className="upload-btn">
             Change Photo
             <input type="file" accept="image/*" onChange={handleImageUpload} />
           </label>
         </div>
 
-        {/* FULL NAME */}
+        {/* Full Name */}
         <label className="form-label">Full Name</label>
-        <input className="input-field" placeholder="Enter full name" />
+        <input className="input" placeholder="Enter full name" />
 
-        {/* ROLE */}
+        {/* Role */}
         <label className="form-label">Current Role</label>
-        <input className="input-field" placeholder="Enter your role" />
+        <input className="input" placeholder="Your role" />
 
-        {/* SUMMARY */}
-        <label className="form-label">Personal Summary</label>
-        <textarea className="textarea-field" placeholder="Write a summary..."></textarea>
+        {/* Summary */}
+        <label className="form-label">Summary</label>
+        <textarea className="textarea" placeholder="Your summary..." />
 
-        {/* SKILLS */}
-        <label className="form-label">Key Skills</label>
+        {/* Skills */}
+        <label className="form-label">Skills</label>
         <div className="skill-list">
           {skills.map((s, i) => (
-            <span key={i} className="skill-chip">
+            <span className="skill-chip" key={i}>
               {s}
               <button onClick={() => removeSkill(s)}>✕</button>
             </span>
@@ -102,8 +94,8 @@ const AboutPage = () => {
 
         <div className="skill-add-box">
           <input
-            className="input-field"
-            placeholder="Add new skill..."
+            className="input"
+            placeholder="Add skill..."
             value={newSkill}
             onChange={(e) => setNewSkill(e.target.value)}
           />
@@ -112,56 +104,53 @@ const AboutPage = () => {
           </button>
         </div>
 
-        {/* EDUCATION */}
+        {/* Education */}
         <label className="form-label">Education</label>
 
-        {education.map((edu, index) => (
-          <div className="education-card" key={index}>
+        {education.map((e, i) => (
+          <div className="education-card" key={i}>
             <div>
-              <p className="edu-title">{edu.title}</p>
-              <p className="edu-sub">{edu.university}</p>
-              <p className="edu-year">{edu.year}</p>
+              <p className="edu-title">{e.title}</p>
+              <p className="edu-sub">{e.university}</p>
+              <p className="edu-year">{e.year}</p>
             </div>
-            <button
-              type="button"
-              className="edu-delete"
-              onClick={() => deleteEducation(index)}
-            >
+            <button className="edu-delete" onClick={() => deleteEducation(i)}>
               ⋮
             </button>
           </div>
         ))}
 
-        <div className="edu-add-fields">
+        <div className="edu-add-box">
           <input
-            className="input-field"
+            className="input"
             placeholder="Course Title"
             value={newEdu.title}
             onChange={(e) => setNewEdu({ ...newEdu, title: e.target.value })}
           />
           <input
-            className="input-field"
+            className="input"
             placeholder="University"
             value={newEdu.university}
             onChange={(e) => setNewEdu({ ...newEdu, university: e.target.value })}
           />
           <input
-            className="input-field"
-            placeholder="Year Range (ex: 2018-2022)"
+            className="input"
+            placeholder="Year (ex: 2019-2022)"
             value={newEdu.year}
             onChange={(e) => setNewEdu({ ...newEdu, year: e.target.value })}
           />
+
+          <button className="add-edu-btn" onClick={addEducation}>
+            + Add Education
+          </button>
         </div>
 
-        <button type="button" className="add-edu-btn" onClick={addEducation}>
-          + Add Education
-        </button>
-
-        {/* PROFESSIONAL INTERESTS */}
+        {/* Interests */}
         <label className="form-label">Professional Interests</label>
-        <textarea className="textarea-field" placeholder="Write here..."></textarea>
+        
+        <textarea className="textarea" placeholder="Write here..." />
 
-        {/* SAVE / CANCEL BUTTONS AT BOTTOM */}
+        {/* Bottom Buttons */}
         <div className="bottom-btns">
           <button
             type="button"
@@ -171,7 +160,7 @@ const AboutPage = () => {
             Cancel
           </button>
 
-          <button type="button" className="save-btn" onClick={handleSave}>
+          <button type="button" className="save-btn">
             Save
           </button>
         </div>
