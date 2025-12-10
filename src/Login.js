@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";  
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
 const IconEmail = () => (
@@ -42,22 +42,39 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-const handleLogin = () => {
-  const adminEmail = "nikhitha@gmail.com";
-  const adminPassword = "Nikhitha@211203";
+  const handleLogin = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-  if (email === adminEmail && password === adminPassword) {
-    localStorage.setItem("isLoggedIn", "true"); 
-    navigate("/dashboard");
-  } else {
-    setError("Invalid email or password!");
-  }
-};
+      const data = await res.json();
+
+      if (res.ok) {
+        localStorage.setItem("isLoggedIn", "true");
+        // We might want to store token if we weren't using httpOnly cookies, 
+        // but for now relying on cookie is good for browser, 
+        // however if we want to confirm validity we should check /api/auth/user
+        navigate("/dashboard");
+      } else {
+        setError(data.msg || "Invalid email or password!");
+      }
+    } catch (err) {
+      setError("Server Error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="login-container">
-      <h1 className="title">Porrtfolio admin (Nikhitha)</h1>
+      <h1 className="title">Portfolio Admin</h1>
       <p className="subtitle">Sign in to manage your content.</p>
 
       <div className="login-box">
@@ -89,23 +106,9 @@ const handleLogin = () => {
           </span>
         </div>
 
-        <button className="login-btn" onClick={handleLogin}>
-          Log In
+        <button className="login-btn" onClick={handleLogin} disabled={loading}>
+          {loading ? "Logging in..." : "Log In"}
         </button>
-
-        <p className="forgot">Forgot Password?</p>
-
-        <div className="divider">
-          <span></span>
-          <p>Or continue with</p>
-          <span></span>
-        </div>
-
-        <button className="bio-btn">
-          <FingerprintIcon />
-          Login with Biometrics
-        </button>
-
       </div>
     </div>
   );

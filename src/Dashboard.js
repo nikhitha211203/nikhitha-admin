@@ -1,69 +1,97 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const navigate = useNavigate();
 
-  // 🔥 Session Check
   useEffect(() => {
     const loggedIn = localStorage.getItem("isLoggedIn");
-    if (!loggedIn) {
-      navigate("/"); // Redirect to login if not logged in
-    }
+    if (!loggedIn) navigate("/");
+    fetchStats();
   }, [navigate]);
+
+  const [stats, setStats] = useState({
+    projects: 0,
+    skills: 0,
+    messages: 0
+  });
+
+  const fetchStats = async () => {
+    try {
+      const [resProj, resSkills, resMsgs] = await Promise.all([
+        fetch("/api/projects"),
+        fetch("/api/skills"),
+        fetch("/api/contact")
+      ]);
+      const projData = await resProj.json();
+      const skillsData = await resSkills.json();
+      const msgsData = await resMsgs.json();
+
+      setStats({
+        projects: projData.length || 0,
+        skills: skillsData.length || 0,
+        messages: msgsData.length || 0
+      });
+    } catch (err) {
+      console.error("Error fetching stats:", err);
+    }
+  };
 
   const contentItems = [
     {
       title: "About Me",
-      desc: "Edit your personal bio and skills",
+      desc: "Edit your personal bio & skills",
       icon: "👤",
       route: "/about",
     },
     {
       title: "Projects",
-      desc: "Manage your projects",
+      desc: "Manage and update all your projects",
       icon: "🧩",
       route: "/projects",
+      count: stats.projects
     },
     {
       title: "Experience & Education",
-      desc: "Update career and academic history",
+      desc: "Add or edit your experience and academics",
       icon: "💼",
       route: "/experience",
     },
     {
       title: "Contact Info",
-      desc: "Set your public contact details",
+      desc: "Update your public contact details",
       icon: "✉️",
       route: "/contact",
+      count: stats.messages
     },
   ];
 
   return (
     <div className="dashboard-container">
-      
+
       {/* Header */}
       <div className="dashboard-header">
         <h2>Admin Dashboard</h2>
 
-        {/* Logout Button */}
         <button
-          className="logout-icon"
-          onClick={() => {
-            localStorage.removeItem("isLoggedIn"); // Clear session
-            navigate("/"); // Go to login
+          className="logout-btn"
+          onClick={async () => {
+            await fetch("/api/auth/logout", { method: "POST" });
+            localStorage.removeItem("isLoggedIn");
+            navigate("/");
           }}
         >
-          ⇦ Logout
+          <span className="logout-icon">🚪</span>
+          Logout
         </button>
       </div>
 
-      {/* Welcome Card */}
+      {/* Welcome section */}
       <div className="welcome-card">
         <div className="banner"></div>
-        <h3>Welcome, Admin!</h3>
-        <p>Here you can manage all the content of your portfolio.</p>
+        <h3>Welcome, Admin! 🎉</h3>
+        <p>You can manage all portfolio content here.</p>
 
         <button
           className="view-btn"
@@ -75,7 +103,7 @@ const Dashboard = () => {
         </button>
       </div>
 
-      {/* Manage Content Section */}
+      {/* Manage Content */}
       <h3 className="section-title">Manage Content</h3>
 
       <div className="content-list">
@@ -86,17 +114,16 @@ const Dashboard = () => {
             onClick={() => navigate(item.route)}
           >
             <div className="icon-circle">{item.icon}</div>
-            <div>
-              <h4>{item.title}</h4>
+
+            <div className="item-info">
+              <h4>{item.title} {item.count !== undefined && <span className="count-badge">({item.count})</span>}</h4>
               <p>{item.desc}</p>
             </div>
+
             <span className="arrow">›</span>
           </div>
         ))}
       </div>
-
-      {/* Floating Add Button */}
-      <button className="floating-btn">＋</button>
     </div>
   );
 };

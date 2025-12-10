@@ -1,170 +1,134 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./AboutPage.css";
 import { useNavigate } from "react-router-dom";
 
 const AboutPage = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
-  // Profile Image
-  const [profileImg, setProfileImg] = useState(null);
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) setProfileImg(URL.createObjectURL(file));
-  };
-
-  // Skills
-  const [skills, setSkills] = useState(["React", "Python", "UI/UX"]);
-  const [newSkill, setNewSkill] = useState("");
-
-  const addSkill = () => {
-    if (!newSkill.trim()) return;
-    setSkills([...skills, newSkill]);
-    setNewSkill("");
-  };
-
-  const removeSkill = (skill) => {
-    setSkills(skills.filter((s) => s !== skill));
-  };
-
-  // Education
-  const [education, setEducation] = useState([
-    {
-      title: "BCA Computer Science",
-      university: "ABC University",
-      year: "2019 - 2022",
-    },
-  ]);
-
-  const [newEdu, setNewEdu] = useState({
-    title: "",
-    university: "",
-    year: "",
+  // Form State
+  const [formData, setFormData] = useState({
+    fullName: "",
+    role: "",
+    bio: "",
+    profileUrl: "",
+    email: "",
+    phone: ""
   });
 
-  const addEducation = () => {
-    if (!newEdu.title || !newEdu.university || !newEdu.year) return;
-    setEducation([...education, newEdu]);
-    setNewEdu({ title: "", university: "", year: "" });
+  useEffect(() => {
+    fetchAbout();
+  }, []);
+
+  const fetchAbout = async () => {
+    try {
+      const res = await fetch("/api/about");
+      const data = await res.json();
+      if (data) {
+        setFormData({
+          fullName: data.fullName || "",
+          role: data.role || "",
+          bio: data.bio || "",
+          profileUrl: data.profileUrl || "",
+          email: data.email || "",
+          phone: data.phone || ""
+        });
+      }
+    } catch (err) {
+      console.error("Error loading about data:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const deleteEducation = (i) => {
-    setEducation(education.filter((_, index) => index !== i));
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSave = async () => {
+    try {
+      const res = await fetch("/api/about", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
+      if (res.ok) {
+        alert("Profile updated successfully!");
+      } else {
+        alert("Failed to update profile.");
+      }
+    } catch (err) {
+      console.error("Error saving profile:", err);
+    }
   };
 
   return (
     <div className="about-wrapper">
-      <h2 className="page-title">Edit About Me</h2>
+      <div className="page-header" style={{ width: '100%', maxWidth: '520px', display: 'flex', justifyContent: 'space-between' }}>
+        <h2 className="page-title">Edit About Me</h2>
+        <button className="save-btn" style={{ padding: '5px 15px' }} onClick={() => navigate("/skills")}>Manage Skills &rarr;</button>
+      </div>
 
-      <form className="form-container">
-        {/* Profile Section */}
-        <div className="profile-section">
-          <img
-            src={profileImg || "https://i.pravatar.cc/200"}
-            className="profile-img"
-            alt="profile"
-          />
-          <label className="upload-btn">
-            Change Photo
-            <input type="file" accept="image/*" onChange={handleImageUpload} />
-          </label>
-        </div>
+      {loading ? <p>Loading...</p> : (
+        <form className="form-container" onSubmit={(e) => e.preventDefault()}>
 
-        {/* Full Name */}
-        <label className="form-label">Full Name</label>
-        <input className="input" placeholder="Enter full name" />
-
-        {/* Role */}
-        <label className="form-label">Current Role</label>
-        <input className="input" placeholder="Your role" />
-
-        {/* Summary */}
-        <label className="form-label">Summary</label>
-        <textarea className="textarea" placeholder="Your summary..." />
-
-        {/* Skills */}
-        <label className="form-label">Skills</label>
-        <div className="skill-list">
-          {skills.map((s, i) => (
-            <span className="skill-chip" key={i}>
-              {s}
-              <button onClick={() => removeSkill(s)}>✕</button>
-            </span>
-          ))}
-        </div>
-
-        <div className="skill-add-box">
+          {/* Profile Image URL (Simplified for now, file upload requires backend upload logic like Multer) */}
+          <label className="form-label">Profile Image URL</label>
           <input
             className="input"
-            placeholder="Add skill..."
-            value={newSkill}
-            onChange={(e) => setNewSkill(e.target.value)}
+            name="profileUrl"
+            value={formData.profileUrl}
+            onChange={handleChange}
+            placeholder="https://..."
           />
-          <button type="button" className="add-btn" onClick={addSkill}>
-            +
-          </button>
-        </div>
+          {formData.profileUrl && <img src={formData.profileUrl} alt="Profile" className="profile-img" style={{ display: 'block', margin: '0 auto 20px' }} />}
 
-        {/* Education */}
-        <label className="form-label">Education</label>
+          {/* Full Name */}
+          <label className="form-label">Full Name</label>
+          <input
+            className="input"
+            name="fullName"
+            value={formData.fullName}
+            onChange={handleChange}
+            placeholder="Enter full name"
+          />
 
-        {education.map((e, i) => (
-          <div className="education-card" key={i}>
-            <div>
-              <p className="edu-title">{e.title}</p>
-              <p className="edu-sub">{e.university}</p>
-              <p className="edu-year">{e.year}</p>
-            </div>
-            <button className="edu-delete" onClick={() => deleteEducation(i)}>
-              ⋮
-            </button>
+          {/* Role */}
+          <label className="form-label">Current Role</label>
+          <input
+            className="input"
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            placeholder="Your role"
+          />
+
+          {/* Bio */}
+          <label className="form-label">Bio</label>
+          <textarea
+            className="textarea"
+            name="bio"
+            value={formData.bio}
+            onChange={handleChange}
+            placeholder="Your biography..."
+          />
+
+          {/* Contact Details */}
+          <label className="form-label">Email</label>
+          <input className="input" name="email" value={formData.email} onChange={handleChange} />
+
+          <label className="form-label">Phone</label>
+          <input className="input" name="phone" value={formData.phone} onChange={handleChange} />
+
+          {/* Removed Education and Experience sections */}
+
+          {/* Bottom Buttons */}
+          <div className="bottom-btns">
+            <button type="button" className="cancel-btn" onClick={() => navigate("/dashboard")}>Cancel</button>
+            <button type="button" className="save-btn" onClick={handleSave}>Save Changes</button>
           </div>
-        ))}
-
-        <div className="edu-add-box">
-          <input
-            className="input"
-            placeholder="Course Title"
-            value={newEdu.title}
-            onChange={(e) => setNewEdu({ ...newEdu, title: e.target.value })}
-          />
-          <input
-            className="input"
-            placeholder="University"
-            value={newEdu.university}
-            onChange={(e) => setNewEdu({ ...newEdu, university: e.target.value })}
-          />
-          <input
-            className="input"
-            placeholder="Year (ex: 2019-2022)"
-            value={newEdu.year}
-            onChange={(e) => setNewEdu({ ...newEdu, year: e.target.value })}
-          />
-
-          <button className="add-edu-btn" onClick={addEducation}>
-            + Add Education
-          </button>
-        </div>
-
-        {/* Interests */}
-        <label className="form-label">Professional Interests</label>
-        
-        <textarea className="textarea" placeholder="Write here..." />
-
-        {/* Bottom Buttons */}
-        <div className="bottom-btns">
-          <button
-            type="button"
-            className="cancel-btn"
-            onClick={() => navigate("/dashboard")}
-          >
-            Cancel
-          </button>
-
-          <button type="button" className="save-btn">
-            Save
-          </button>
-        </div>
-      </form>
+        </form>
+      )}
     </div>
   );
 };
