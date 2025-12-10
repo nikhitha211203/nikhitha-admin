@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./ProjectForm.css"; // Reusing form styles
+import API_URL from "../config";
 
 const SkillForm = () => {
     const navigate = useNavigate();
@@ -25,7 +26,7 @@ const SkillForm = () => {
 
     const fetchSkill = async () => {
         try {
-            const res = await fetch(`/api/skills/${id}`);
+            const res = await fetch(`${API_URL}/api/skills/${id}`);
             if (!res.ok) throw new Error("Failed to fetch skill");
             const data = await res.json();
             setFormData(data);
@@ -44,7 +45,7 @@ const SkillForm = () => {
         setError("");
 
         try {
-            const url = isEdit ? `/api/skills/${id}` : "/api/skills";
+            const url = isEdit ? `${API_URL}/api/skills/${id}` : `${API_URL}/api/skills`;
             const method = isEdit ? "PUT" : "POST";
 
             const res = await fetch(url, {

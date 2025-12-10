@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./ExperienceEducation.css";
 import { useNavigate } from "react-router-dom";
+import API_URL from "../config";
 
 const ExperienceEducation = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const ExperienceEducation = () => {
 
   const fetchData = async () => {
     try {
-      const res = await fetch("/api/about");
+      const res = await fetch(`${API_URL}/api/about`);
       const data = await res.json();
       if (data) {
         setEducation(data.education || []);
@@ -40,7 +41,7 @@ const ExperienceEducation = () => {
       // Since our API is /api/about for PUT/POST, we need to fetch, filter, and save.
       // Or if we added specific delete endpoints to About controller, that would be better.
       // For now, client-side filter + update is consistent with Add logic we will implement.
-      const res = await fetch("/api/about");
+      const res = await fetch(`${API_URL}/api/about`);
       const data = await res.json();
 
       if (type === 'education') {
@@ -49,7 +50,7 @@ const ExperienceEducation = () => {
         data.experience = data.experience.filter(item => item._id !== id);
       }
 
-      await fetch("/api/about", {
+      await fetch(`${API_URL}/api/about`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)

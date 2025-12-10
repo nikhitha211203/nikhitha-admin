@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AddExperience.css";
+import API_URL from "../config";
 
 const AddExperience = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const AddExperience = () => {
 
     try {
       // Fetch existing about data
-      const res = await fetch("/api/about");
+      const res = await fetch(`${API_URL}/api/about`);
       const data = await res.json();
 
       const newExp = {
@@ -43,7 +44,7 @@ const AddExperience = () => {
         experience: [...(data.experience || []), newExp]
       };
 
-      await fetch("/api/about", {
+      await fetch(`${API_URL}/api/about`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedData)

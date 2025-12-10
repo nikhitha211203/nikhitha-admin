@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./AboutPage.css";
 import { useNavigate } from "react-router-dom";
+import API_URL from "../config";
 
 const AboutPage = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const AboutPage = () => {
 
   const fetchAbout = async () => {
     try {
-      const res = await fetch("/api/about");
+      const res = await fetch(`${API_URL}/api/about`);
       const data = await res.json();
       if (data) {
         setFormData({
@@ -47,7 +48,7 @@ const AboutPage = () => {
 
   const handleSave = async () => {
     try {
-      const res = await fetch("/api/about", {
+      const res = await fetch(`${API_URL}/api/about`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)

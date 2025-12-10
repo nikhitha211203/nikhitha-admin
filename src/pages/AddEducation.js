@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AddEducation.css";
+import API_URL from "../config";
 
 const AddEducation = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const AddEducation = () => {
     }
 
     try {
-      const res = await fetch("/api/about");
+      const res = await fetch(`${API_URL}/api/about`);
       const data = await res.json();
 
       const newEdu = {
@@ -39,7 +40,7 @@ const AddEducation = () => {
         education: [...(data.education || []), newEdu]
       };
 
-      await fetch("/api/about", {
+      await fetch(`${API_URL}/api/about`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedData)

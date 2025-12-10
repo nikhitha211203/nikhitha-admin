@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Skills.css"; // Reuse existing styles for consistency
 import { useNavigate } from "react-router-dom";
+import API_URL from "../config";
 
 const ContactPage = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const ContactPage = () => {
 
   const fetchMessages = async () => {
     try {
-      const res = await fetch("/api/contact");
+      const res = await fetch(`${API_URL}/api/contact`);
       const data = await res.json();
       setMessages(data);
     } catch (err) {
@@ -26,7 +27,7 @@ const ContactPage = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this message?")) return;
     try {
-      await fetch(`/api/contact/${id}`, { method: "DELETE" });
+      await fetch(`${API_URL}/api/contact/${id}`, { method: "DELETE" });
       setMessages(messages.filter((m) => m._id !== id));
     } catch (err) {
       console.error(err);
@@ -35,7 +36,7 @@ const ContactPage = () => {
 
   const markAsRead = async (id) => {
     try {
-      await fetch(`/api/contact/${id}`, { method: "PUT" });
+      await fetch(`${API_URL}/api/contact/${id}`, { method: "PUT" });
       setMessages(messages.map(m => m._id === id ? { ...m, isRead: true } : m));
     } catch (err) {
       console.error(err);

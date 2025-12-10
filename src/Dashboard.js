@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
+import API_URL from "./config";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -20,9 +21,9 @@ const Dashboard = () => {
   const fetchStats = async () => {
     try {
       const [resProj, resSkills, resMsgs] = await Promise.all([
-        fetch("/api/projects"),
-        fetch("/api/skills"),
-        fetch("/api/contact")
+        fetch(`${API_URL}/api/projects`),
+        fetch(`${API_URL}/api/skills`),
+        fetch(`${API_URL}/api/contact`)
       ]);
       const projData = await resProj.json();
       const skillsData = await resSkills.json();
@@ -77,7 +78,7 @@ const Dashboard = () => {
         <button
           className="logout-btn"
           onClick={async () => {
-            await fetch("/api/auth/logout", { method: "POST" });
+            await fetch(`${API_URL}/api/auth/logout`, { method: "POST" });
             localStorage.removeItem("isLoggedIn");
             navigate("/");
           }}

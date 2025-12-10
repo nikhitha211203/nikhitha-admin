@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./ProjectForm.css";
+import API_URL from "../config";
 
 const ProjectForm = () => {
     const navigate = useNavigate();
@@ -26,7 +27,7 @@ const ProjectForm = () => {
 
     const fetchProject = async () => {
         try {
-            const res = await fetch(`/api/projects/${id}`);
+            const res = await fetch(`${API_URL}/api/projects/${id}`);
             if (!res.ok) throw new Error("Failed to fetch project");
             const data = await res.json();
             setFormData({
@@ -53,7 +54,7 @@ const ProjectForm = () => {
         };
 
         try {
-            const url = isEdit ? `/api/projects/${id}` : "/api/projects";
+            const url = isEdit ? `${API_URL}/api/projects/${id}` : `${API_URL}/api/projects`;
             const method = isEdit ? "PUT" : "POST";
 
             const res = await fetch(url, {

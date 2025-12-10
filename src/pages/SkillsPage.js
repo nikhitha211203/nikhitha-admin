@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Skills.css";
 import { useNavigate } from "react-router-dom";
+import API_URL from "../config";
 
 const SkillsPage = () => {
     const navigate = useNavigate();
@@ -13,7 +14,7 @@ const SkillsPage = () => {
 
     const fetchSkills = async () => {
         try {
-            const res = await fetch("/api/skills");
+            const res = await fetch(`${API_URL}/api/skills`);
             const data = await res.json();
             setSkills(data);
         } catch (err) {
@@ -27,7 +28,7 @@ const SkillsPage = () => {
         if (!window.confirm("Are you sure you want to delete this skill?")) return;
 
         try {
-            const res = await fetch(`/api/skills/${id}`, {
+            const res = await fetch(`${API_URL}/api/skills/${id}`, {
                 method: "DELETE",
             });
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Projects.css";
 import { useNavigate } from "react-router-dom";
+import API_URL from "../config";
 
 const ProjectsPage = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const ProjectsPage = () => {
 
   const fetchProjects = async () => {
     try {
-      const res = await fetch("/api/projects");
+      const res = await fetch(`${API_URL}/api/projects`);
       const data = await res.json();
       setProjects(data);
     } catch (err) {
@@ -27,7 +28,7 @@ const ProjectsPage = () => {
     if (!window.confirm("Are you sure you want to delete this project?")) return;
 
     try {
-      const res = await fetch(`/api/projects/${id}`, {
+      const res = await fetch(`${API_URL}/api/projects/${id}`, {
         method: "DELETE"
       });
 
